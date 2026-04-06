@@ -24,9 +24,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/craigstevenson/simple-task"
-Repository = "https://github.com/craigstevenson/simple-task"
-Issues = "https://github.com/craigstevenson/simple-task/issues"
+Homepage = "https://github.com/craig-stevenson/simple-task"
+Repository = "https://github.com/craig-stevenson/simple-task"
+Issues = "https://github.com/craig-stevenson/simple-task/issues"
 
 [build-system]
 requires = ["uv_build>=0.8.13,<0.9.0"]
