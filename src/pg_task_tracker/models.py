@@ -11,11 +11,11 @@ def _utcnow() -> datetime:
 
 
 class TaskStep(SQLModel, table=True):
-    __tablename__ = "st_task_step"
+    __tablename__ = "ptt_task_step"
     __table_args__ = (UniqueConstraint("task_id", "name"),)
 
     id: _uuid.UUID = Field(default_factory=_uuid.uuid4, primary_key=True)
-    task_id: _uuid.UUID = Field(foreign_key="st_task.id", index=True)
+    task_id: _uuid.UUID = Field(foreign_key="ptt_task.id", index=True)
     name: str = Field(max_length=255)
     status: str = Field(default="pending", sa_column=Column(String(20), nullable=False, server_default="pending"))
     created_at: datetime = Field(default_factory=_utcnow)
@@ -29,7 +29,7 @@ class TaskStep(SQLModel, table=True):
 
 
 class Task(SQLModel, table=True):
-    __tablename__ = "st_task"
+    __tablename__ = "ptt_task"
 
     id: _uuid.UUID = Field(default_factory=_uuid.uuid4, primary_key=True)
     name: str = Field(max_length=255, index=True)

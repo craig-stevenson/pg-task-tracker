@@ -47,12 +47,12 @@ Every method that mutates state commits immediately — there is no batching or 
 | Method | DB Operations | Round-trips |
 |---|---|---|
 | `ensure_schema(engine)` | `CREATE TABLE IF NOT EXISTS` for each table | 1 |
-| `create_task(engine, ...)` | `INSERT` into `st_task` | 1 |
-| `get_task(engine, task_id)` | `SELECT` from `st_task` to verify existence | 1 |
-| `task.add_step(...)` | `INSERT` into `st_task_step` | 1 |
-| `task.update_step(...)` | `SELECT` + `UPDATE` on `st_task_step` | 2 |
-| `task.update_status(...)` | `SELECT` + `UPDATE` on `st_task` | 2 |
-| `task.get_steps()` | `SELECT` from `st_task_step` ordered by `created_at` | 1 |
+| `create_task(engine, ...)` | `INSERT` into `ptt_task` | 1 |
+| `get_task(engine, task_id)` | `SELECT` from `ptt_task` to verify existence | 1 |
+| `task.add_step(...)` | `INSERT` into `ptt_task_step` | 1 |
+| `task.update_step(...)` | `SELECT` + `UPDATE` on `ptt_task_step` | 2 |
+| `task.update_status(...)` | `SELECT` + `UPDATE` on `ptt_task` | 2 |
+| `task.get_steps()` | `SELECT` from `ptt_task_step` ordered by `created_at` | 1 |
 | `get_migration_sql()` | None (reads bundled `.sql` file from package) | 0 |
 
 For a typical task with N steps where each step transitions through `pending` -> `running` -> `completed`, expect roughly **2N + 2** round-trips: 1 to create the task, 1 per `add_step`, 2 per `update_step`, and 1 to update the final task status.
@@ -85,5 +85,5 @@ Timestamps are managed automatically:
 ## Table Names
 
 All tables are prefixed with `st_` to avoid conflicts:
-- `st_task`
-- `st_task_step`
+- `ptt_task`
+- `ptt_task_step`

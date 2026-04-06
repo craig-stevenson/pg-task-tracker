@@ -30,8 +30,8 @@ def test_task_step_defaults() -> None:
 
 def test_get_migration_sql() -> None:
     sql = get_migration_sql()
-    assert "CREATE TABLE IF NOT EXISTS st_task" in sql
-    assert "CREATE TABLE IF NOT EXISTS st_task_step" in sql
+    assert "CREATE TABLE IF NOT EXISTS ptt_task" in sql
+    assert "CREATE TABLE IF NOT EXISTS ptt_task_step" in sql
 
 
 def test_status_types() -> None:
