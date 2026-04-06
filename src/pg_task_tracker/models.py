@@ -18,7 +18,6 @@ class TaskStep(SQLModel, table=True):
     task_id: _uuid.UUID = Field(foreign_key="st_task.id", index=True)
     name: str = Field(max_length=255)
     status: str = Field(default="pending", sa_column=Column(String(20), nullable=False, server_default="pending"))
-    step_order: int
     created_at: datetime = Field(default_factory=_utcnow)
     started_at: datetime | None = Field(default=None)
     completed_at: datetime | None = Field(default=None)

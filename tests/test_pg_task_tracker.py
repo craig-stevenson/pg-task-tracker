@@ -20,7 +20,7 @@ def test_task_defaults() -> None:
 
 def test_task_step_defaults() -> None:
     task_id = uuid.uuid4()
-    step = TaskStep(name="step-1", task_id=task_id, step_order=1)
+    step = TaskStep(name="step-1", task_id=task_id)
     assert step.name == "step-1"
     assert step.status == "pending"
     assert step.started_at is None

@@ -22,7 +22,6 @@ CREATE TABLE IF NOT EXISTS st_task_step (
     name          VARCHAR(255) NOT NULL,
     status        VARCHAR(20)  NOT NULL DEFAULT 'pending'
                   CHECK (status IN ('pending', 'running', 'completed', 'failed')),
-    step_order    INTEGER      NOT NULL,
     created_at    TIMESTAMPTZ  NOT NULL DEFAULT now(),
     started_at    TIMESTAMPTZ,
     completed_at  TIMESTAMPTZ,
