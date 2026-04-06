@@ -6,8 +6,8 @@ from uuid import UUID
 from sqlalchemy import Engine, func
 from sqlmodel import Session, select
 
-from simple_task._types import StepStatus, TaskStatus
-from simple_task.models import Task, TaskStep, _utcnow
+from pg_task_tracker._types import StepStatus, TaskStatus
+from pg_task_tracker.models import Task, TaskStep, _utcnow
 
 
 class TaskHandle:

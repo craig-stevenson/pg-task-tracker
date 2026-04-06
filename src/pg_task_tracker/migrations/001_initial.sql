@@ -1,4 +1,4 @@
--- simple_task: initial schema
+-- pg_task_tracker: initial schema
 -- Apply with: psql -f 001_initial.sql your_database
 
 BEGIN;

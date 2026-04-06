@@ -5,7 +5,7 @@ import uuid
 import pytest
 from sqlalchemy import Engine
 
-from simple_task import TaskTracker, ensure_schema
+from pg_task_tracker import TaskTracker, ensure_schema
 
 
 @pytest.fixture()

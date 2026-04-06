@@ -1,6 +1,6 @@
 import uuid
 
-from simple_task import (
+from pg_task_tracker import (
     Task,
     TaskStep,
     StepStatus,

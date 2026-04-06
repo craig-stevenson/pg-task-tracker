@@ -5,7 +5,7 @@ import importlib.resources
 from sqlalchemy import Engine
 from sqlmodel import SQLModel
 
-from simple_task import models as _models  # noqa: F401 — ensure tables are registered
+from pg_task_tracker import models as _models  # noqa: F401 — ensure tables are registered
 
 
 def ensure_schema(engine: Engine) -> None:
@@ -16,7 +16,7 @@ def ensure_schema(engine: Engine) -> None:
 def get_migration_sql() -> str:
     """Return the contents of the bundled SQL migration file."""
     return (
-        importlib.resources.files("simple_task")
+        importlib.resources.files("pg_task_tracker")
         .joinpath("migrations/001_initial.sql")
         .read_text(encoding="utf-8")
     )

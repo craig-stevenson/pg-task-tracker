@@ -1,5 +1,5 @@
 [project]
-name = "simple-task"
+name = "pg-task-tracker"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -24,9 +24,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/craig-stevenson/simple-task"
-Repository = "https://github.com/craig-stevenson/simple-task"
-Issues = "https://github.com/craig-stevenson/simple-task/issues"
+Homepage = "https://github.com/craig-stevenson/pg-task-tracker"
+Repository = "https://github.com/craig-stevenson/pg-task-tracker"
+Issues = "https://github.com/craig-stevenson/pg-task-tracker/issues"
 
 [build-system]
 requires = ["uv_build>=0.8.13,<0.9.0"]
