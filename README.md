@@ -12,12 +12,14 @@ pip install pg-task-tracker
 
 ```python
 from sqlmodel import create_engine
+import pg_task_tracker
 from pg_task_tracker import create_task, get_task, ensure_schema
 
 engine = create_engine("postgresql+psycopg2://user:pass@localhost/mydb")
 ensure_schema(engine)
+pg_task_tracker.init(engine)
 
-task = create_task(engine, "etl-pipeline")
+task = create_task("etl-pipeline")
 
 task.add_step("extract", status="running")
 task.update_step("extract", status="completed", metadata={"rows": 5000})
@@ -34,11 +36,45 @@ task.update_status("failed")
 ## Resuming a Task
 
 ```python
-task = get_task(engine, task_id)
+task = get_task(task_id)
 
 for step in task.get_steps():
     print(f"{step.name}: {step.status}")
 ```
+
+## Decorator
+
+Initialize the library once at startup, then use `@track()` to automatically create a task and track a function's execution:
+
+```python
+import pg_task_tracker
+from pg_task_tracker import track
+
+pg_task_tracker.init(engine)
+
+@track()
+def run_pipeline():
+    extract_data()
+    transform_data()
+    load_data()
+
+run_pipeline()  # Creates task "run_pipeline", sets status to completed or failed
+```
+
+The decorator:
+- Creates a new task with status `"running"` when the function is called
+- Sets the task to `"completed"` if the function returns normally
+- Sets the task to `"failed"` if the function raises an exception (the exception is re-raised)
+
+Override the task name with the `name` parameter:
+
+```python
+@track(name="nightly-etl")
+def run_pipeline():
+    ...
+```
+
+Calling `@track()` without first calling `pg_task_tracker.init(engine)` will raise a `RuntimeError`.
 
 ## Database Strategy
 
@@ -47,8 +83,8 @@ Every method that mutates state commits immediately — there is no batching or 
 | Method | DB Operations | Round-trips |
 |---|---|---|
 | `ensure_schema(engine)` | `CREATE TABLE IF NOT EXISTS` for each table | 1 |
-| `create_task(engine, ...)` | `INSERT` into `ptt_task` | 1 |
-| `get_task(engine, task_id)` | `SELECT` from `ptt_task` to verify existence | 1 |
+| `create_task(name, ...)` | `INSERT` into `ptt_task` | 1 |
+| `get_task(task_id)` | `SELECT` from `ptt_task` to verify existence | 1 |
 | `task.add_step(...)` | `INSERT` into `ptt_task_step` | 1 |
 | `task.update_step(...)` | `SELECT` + `UPDATE` on `ptt_task_step` | 2 |
 | `task.update_status(...)` | `SELECT` + `UPDATE` on `ptt_task` | 2 |
@@ -84,6 +120,6 @@ Timestamps are managed automatically:
 
 ## Table Names
 
-All tables are prefixed with `st_` to avoid conflicts:
+All tables are prefixed with `ptt_` to avoid conflicts:
 - `ptt_task`
 - `ptt_task_step`

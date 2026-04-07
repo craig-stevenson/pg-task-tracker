@@ -6,6 +6,7 @@ from uuid import UUID
 from sqlalchemy import Engine
 from sqlmodel import Session, select
 
+from pg_task_tracker._state import get_engine
 from pg_task_tracker._types import StepStatus, TaskStatus
 from pg_task_tracker.models import Task, TaskStep, _utcnow
 
@@ -95,24 +96,26 @@ class TaskHandle:
 
 
 def create_task(
-    engine: Engine,
     name: str,
     *,
+    engine: Engine | None = None,
     status: TaskStatus = "pending",
     metadata: dict[str, Any] | None = None,
 ) -> TaskHandle:
     """Create a new task and return a handle to it."""
+    eng = get_engine(engine)
     task = Task(name=name, status=status, task_metadata=metadata)
-    with Session(engine) as session:
+    with Session(eng) as session:
         session.add(task)
         session.commit()
         session.refresh(task)
         task_id = task.id
-    return TaskHandle(task_id, engine)
+    return TaskHandle(task_id, eng)
 
 
-def get_task(engine: Engine, task_id: UUID) -> TaskHandle:
+def get_task(task_id: UUID, *, engine: Engine | None = None) -> TaskHandle:
     """Resume working with an existing task by its UUID."""
-    with Session(engine) as session:
+    eng = get_engine(engine)
+    with Session(eng) as session:
         session.get_one(Task, task_id)
-    return TaskHandle(task_id, engine)
+    return TaskHandle(task_id, eng)

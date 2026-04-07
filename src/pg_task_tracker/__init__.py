@@ -1,11 +1,15 @@
 from pg_task_tracker._types import StepStatus, TaskStatus
+from pg_task_tracker._state import init
+from pg_task_tracker.decorator import track
 from pg_task_tracker.models import Task, TaskStep
 from pg_task_tracker.schema import ensure_schema, get_migration_sql
 from pg_task_tracker.tracker import TaskHandle, create_task, get_task
 
 __all__ = [
+    "init",
     "create_task",
     "get_task",
+    "track",
     "TaskHandle",
     "ensure_schema",
     "get_migration_sql",
